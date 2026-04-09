@@ -1,0 +1,36 @@
+# ============================================================================
+# .gitignore — Banca dos Filmes
+# ============================================================================
+
+# Dependências
+node_modules/
+
+# Build
+dist/
+build/
+
+# Variáveis de ambiente — NUNCA vão pro repositório
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Prisma
+server/prisma/migrations/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
