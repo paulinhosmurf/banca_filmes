@@ -30,6 +30,13 @@ export function csrfProtection(
     return;
   }
 
+  // Ignora rotas de autenticação inicial (usuário ainda não tem o cookie)
+  const isAuthRoute = req.path.endsWith('/register') || req.path.endsWith('/login');
+  if (isAuthRoute) {
+    next();
+    return;
+  }
+
   const cookieToken = req.cookies?.['csrf-token'];
   const headerToken = req.headers['x-csrf-token'];
 
