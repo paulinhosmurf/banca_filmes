@@ -15,14 +15,12 @@ import { sanitizeText } from '../utils/sanitize';
 
 export async function listMovies(req: Request, res: Response): Promise<void> {
   try {
-    const { page, limit, genre, year, search, featured } = req.query as {
-      page: number;
-      limit: number;
-      genre?: string;
-      year?: number;
-      search?: string;
-      featured?: boolean;
-    };
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 20;
+    const genre = typeof req.query.genre === 'string' ? req.query.genre : undefined;
+    const year = req.query.year ? Number(req.query.year) : undefined;
+    const search = typeof req.query.search === 'string' ? req.query.search : undefined;
+    const featured = req.query.featured === 'true' ? true : req.query.featured === 'false' ? false : undefined;
 
     const skip = (page - 1) * limit;
 
@@ -72,7 +70,7 @@ export async function listMovies(req: Request, res: Response): Promise<void> {
 
 export async function getMovie(req: Request, res: Response): Promise<void> {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const movie = await prisma.movie.findUnique({
       where: { id },
@@ -142,7 +140,7 @@ export async function createMovie(req: Request, res: Response): Promise<void> {
 
 export async function updateMovie(req: Request, res: Response): Promise<void> {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const data = req.body;
 
     // Sanitiza campos de texto se estiverem presentes
@@ -168,7 +166,7 @@ export async function updateMovie(req: Request, res: Response): Promise<void> {
 
 export async function deleteMovie(req: Request, res: Response): Promise<void> {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     await prisma.movie.delete({ where: { id } });
 
