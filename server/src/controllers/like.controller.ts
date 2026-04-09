@@ -17,7 +17,7 @@ import { Prisma } from '@prisma/client';
 
 export async function toggleLike(req: Request, res: Response): Promise<void> {
   try {
-    const { movieId } = req.params;
+    const movieId = req.params.movieId as string;
     const userId = req.user!.userId;
 
     // Verifica se o filme existe
@@ -77,7 +77,7 @@ export async function toggleLike(req: Request, res: Response): Promise<void> {
 
 export async function checkLike(req: Request, res: Response): Promise<void> {
   try {
-    const { movieId } = req.params;
+    const movieId = req.params.movieId as string;
     const userId = req.user!.userId;
 
     const like = await prisma.like.findUnique({

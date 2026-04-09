@@ -13,7 +13,7 @@ export async function toggleFavorite(
   res: Response
 ): Promise<void> {
   try {
-    const { movieId } = req.params;
+    const movieId = req.params.movieId as string;
     const userId = req.user!.userId;
 
     const movie = await prisma.movie.findUnique({ where: { id: movieId } });

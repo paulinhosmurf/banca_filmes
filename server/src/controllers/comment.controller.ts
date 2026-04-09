@@ -1,19 +1,6 @@
 // ============================================================================
 // Comment Controller — Demonstração de Sanitização XSS
 // ============================================================================
-// FLUXO DE PROTEÇÃO CONTRA XSS ARMAZENADO:
-//
-// 1. Zod valida: tamanho (1-1000 chars), tipo (string), trim
-// 2. Controller sanitiza: DOMPurify remove scripts, event handlers, etc.
-// 3. Prisma persiste: query parametrizada, impossível injetar SQL
-// 4. Frontend exibe: conteúdo já limpo, sem dangerouslySetInnerHTML
-//
-// DEMONSTRAÇÃO:
-// Input:  "<script>alert('xss')</script><b>Ótimo filme!</b>"
-// Após Zod:  "<script>alert('xss')</script><b>Ótimo filme!</b>" (formato ok)
-// Após DOMPurify: "<b>Ótimo filme!</b>" (script REMOVIDO)
-// No banco: "<b>Ótimo filme!</b>" (limpo para sempre)
-// ============================================================================
 
 import { Request, Response } from 'express';
 import { prisma } from '../utils/prisma';
@@ -27,7 +14,7 @@ export async function createComment(
 ): Promise<void> {
   try {
     const { content } = req.body;
-    const { movieId } = req.params;
+    const movieId = req.params.movieId as string;
     const userId = req.user!.userId;
 
     // Verifica se o filme existe
@@ -51,7 +38,7 @@ export async function createComment(
 
     const comment = await prisma.comment.create({
       data: {
-        content: safeContent, // Conteúdo LIMPO vai pro banco
+        content: safeContent,
         userId,
         movieId,
       },
@@ -74,8 +61,9 @@ export async function listComments(
   res: Response
 ): Promise<void> {
   try {
-    const { movieId } = req.params;
-    const { page, limit } = req.query as { page: number; limit: number };
+    const movieId = req.params.movieId as string;
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
 
     const skip = (page - 1) * limit;
 
@@ -109,7 +97,7 @@ export async function deleteComment(
   res: Response
 ): Promise<void> {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const userId = req.user!.userId;
     const userRole = req.user!.role;
 
