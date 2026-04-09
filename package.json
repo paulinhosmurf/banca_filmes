@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "description": "SaaS de streaming com segurança DevSecOps",
+  "scripts": {
+    "install-all": "npm install && cd server && npm install && cd ../client && npm install",
+    "build:client": "cd client && npm run build",
+    "db:push": "cd server && npx prisma generate && npx prisma db push",
+    "build": "npm run db:push && npm run build:client"
+  },
   "engines": {
     "node": ">=18"
   }
