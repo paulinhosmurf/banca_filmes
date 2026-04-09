@@ -93,6 +93,10 @@ class ApiService {
     return this.request('/auth/me');
   }
 
+  async getMe() {
+    return this.me();
+  }
+
   // ─── Movies ──────────────────────────────────────────────────────────────
 
   async getMovies(params?: Record<string, string | number>) {
@@ -137,8 +141,8 @@ class ApiService {
     });
   }
 
-  async deleteComment(commentId: string) {
-    return this.request(`/comments/${commentId}`, { method: 'DELETE' });
+  async deleteComment(movieId: string, commentId: string) {
+    return this.request(`/comments/${movieId}/${commentId}`, { method: 'DELETE' });
   }
 }
 

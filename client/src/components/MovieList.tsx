@@ -10,6 +10,7 @@
 // ============================================================================
 
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MovieCard } from './MovieCard';
 import { api } from '../services/api';
 import './MovieList.css';
@@ -35,6 +36,7 @@ interface MoviesResponse {
 }
 
 export function MovieList() {
+  const navigate = useNavigate();
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -117,10 +119,7 @@ export function MovieList() {
             key={movie.id}
             movie={movie}
             index={index}
-            onClick={(id) => {
-              // Navegação para detalhes com transição
-              console.log('Navigate to', id);
-            }}
+            onClick={(id) => navigate(`/filme/${id}`)}
           />
         ))}
       </div>
