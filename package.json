@@ -1,0 +1,9 @@
+{
+  "name": "banca-filmes",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SaaS de streaming com segurança DevSecOps",
+  "engines": {
+    "node": ">=18"
+  }
+}

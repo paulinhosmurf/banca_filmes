@@ -121,15 +121,19 @@ app.use(
 );
 
 // ─── Iniciar Servidor ───────────────────────────────────────────────────────
+// No Vercel (serverless), o `app.listen()` não é chamado.
+// A plataforma importa o `app` e gerencia o listener automaticamente.
 
-app.listen(env.PORT, () => {
-  console.log(`\n🎬 Banca dos Filmes API rodando na porta ${env.PORT}`);
-  console.log(`📍 Ambiente: ${env.NODE_ENV}`);
-  console.log(`🔗 Client URL: ${env.CLIENT_URL}`);
-  console.log(`🛡️  Helmet: ativado`);
-  console.log(`🚦 Rate Limiting: ativado`);
-  console.log(`🔐 CSRF Protection: ativado`);
-  console.log(`🍪 JWT em HttpOnly Cookie: ativado\n`);
-});
+if (process.env.VERCEL !== '1') {
+  app.listen(env.PORT, () => {
+    console.log(`\n🎬 Banca dos Filmes API rodando na porta ${env.PORT}`);
+    console.log(`📍 Ambiente: ${env.NODE_ENV}`);
+    console.log(`🔗 Client URL: ${env.CLIENT_URL}`);
+    console.log(`🛡️  Helmet: ativado`);
+    console.log(`🚦 Rate Limiting: ativado`);
+    console.log(`🔐 CSRF Protection: ativado`);
+    console.log(`🍪 JWT em HttpOnly Cookie: ativado\n`);
+  });
+}
 
 export default app;

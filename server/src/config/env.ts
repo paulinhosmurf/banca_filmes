@@ -16,7 +16,7 @@ const envSchema = z.object({
   // ─── Banco de Dados ────────────────────────────────────────────────────
   DATABASE_URL: z
     .string()
-    .url('DATABASE_URL deve ser uma URL válida do PostgreSQL'),
+    .min(1, 'DATABASE_URL é obrigatória'),
 
   // ─── JWT ────────────────────────────────────────────────────────────────
   JWT_SECRET: z
@@ -25,9 +25,10 @@ const envSchema = z.object({
   JWT_EXPIRES_IN: z.string().default('7d'),
 
   // ─── CORS ───────────────────────────────────────────────────────────────
+  // No Vercel, CLIENT_URL usa VERCEL_URL como fallback
   CLIENT_URL: z
     .string()
-    .url('CLIENT_URL deve ser a URL do frontend (ex: https://bancadosfilmes.vercel.app)'),
+    .default(process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:5173'),
 
   // ─── CSRF ───────────────────────────────────────────────────────────────
   CSRF_SECRET: z
